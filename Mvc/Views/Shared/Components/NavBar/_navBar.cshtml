@@ -1,0 +1,83 @@
+﻿@model NavBarGeneralDto
+
+<link href="~/Navbar/navbar.css" rel="stylesheet" />
+<link href="~/sweetalert/sweetalert2.min.css" rel="stylesheet" />
+<div class="topnav" id="myTopnav">
+    @if (User.IsInRole("Warehouse"))
+    {
+        if (!Model.users[0].Factory.Name.Contains("KMF"))
+        {
+            foreach (var line in Model.worksAreas)
+            {
+                <a href="/Warehouse/Index/@line.SubLineId">@(line.SubLine.AssemblyLine.Name + " " + line.SubLine.Name)</a>
+            }
+        }
+        else
+        {
+            foreach (var line in Model.wareHouseUsers)
+            {
+                <a href="/Warehouse/Index/@line.WarehouseLocationId">@(line.WarehouseLocation.Name)</a>
+            }
+        }
+        <a href="/List/OrderHistory">Geçmiş Siparişler</a>
+    }
+    else if (User.IsInRole("Supervisor"))
+    {
+
+        <a href="/Order/Index"> Yeni Sipariş </a>
+        <a href="/Order/AgvRequest">Agv Talep</a>
+        <a href="/List/Index">Sipariş Takip</a>
+        <a href="/List/OrderHistory">Geçmiş Siparişler</a>
+
+    }
+    else if (User.IsInRole("TV"))
+    {
+        foreach (var tv in Model.assemblyLines)
+        {
+            <a href="/Tv/Index/@tv.Id"> @(tv.Name) </a>
+        }
+    }
+    <a style=" float: right; background-color:red;" href="/Login/Logout">Çıkış Yap</a>
+    <a class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+</div>
+<!--===============================================================================================-->
+<script src="~/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="~/bootstrap/js/popper.js"></script>
+<!--===============================================================================================-->
+<script src="~/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/sweetalert/sweetalert2.all.min.js"></script>
+<script>
+    $(document).ready(function () {
+        hideLoader();
+    });
+    function hideLoader() {
+        $('#loading').hide();
+    }
+    setTimeout(hideLoader, 20 * 1000);
+</script>
+<script>
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(function () {
+            var url = window.location.href;
+            $(".topnav a").each(function () {
+                if (url.includes(this.href)) {
+                    $(this).addClass("active");
+                }
+            });
+        });
+    });
+</script>
+

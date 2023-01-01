@@ -1,0 +1,80 @@
+﻿@model OrderLog
+@{
+    Layout = null;
+}
+<head>
+    <link href="~/OrderDetails/OrderDetails.css" rel="stylesheet" />
+</head>
+<div class="modal fade" id="orderDetailsModal" style="margin-top: 5%;width:auto; height:auto">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: transparent; border: 0px; width:auto; height: auto;">
+            <div class="modal-body" style="width:auto; height:auto; background-color:transparent">
+                <div class="container px-1 px-md-4 py-5 mx-auto">
+                    <div class="card">
+                        <div class="row d-flex justify-content-between px-3 top">
+
+                            <div class="d-flex flex-column text-sm-left">
+                                <p>Sipariş Tarihi<span class="font-weight-bold"> @Model.OrderDate.Value</span></p>
+                                <p>İstasyon Numara<span class="font-weight-bold"> @Model.Station.StationNumber</span></p>
+                                <p>Malz. Kodu <span class="font-weight-bold"> @Model.MaterialCode</span></p>
+                            </div>
+                        </div> <!-- Add class 'active' to progress -->
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-12">
+                                @if (Model.Status.Contains("Tamamlandı"))
+                                {
+                                    <ul id="progressbar" class="text-center">
+                                        <li class="active step0"><span class="font-weight-bold">Sipariş Verildi @Model.OrderDate.Value</span></li>
+                                        <li class="active step1"><span class="font-weight-bold">Sipariş Onaylandı @Model.AcceptDate.Value</span></li>
+                                        <li class="active step2"><span class="font-weight-bold">Sipariş Yolda @Model.AcceptDate.Value</span></li>
+                                        <li class="active step3"><span class="font-weight-bold" style="color:green;">Teslim Edildi @Model.CompletedDate.Value</span></li>
+                                    </ul>
+                                }
+                                @if (Model.Status.Contains("İptal Edildi"))
+                                {
+                                    <ul id="progressbar" class="text-center">
+                                        <li class="active step0"><span class="font-weight-bold">Sipariş Verildi @Model.OrderDate.Value</span></li>
+                                        <li class="active step1"><span class="font-weight-bold" style="color:red;">Sipariş İptal Edildi @Model.CancelDate.Value</span></li>
+                                        <li class="step2"><span class="font-weight-bold"></span></li>
+                                        <li class="step3"><span class="font-weight-bold"></span></li>
+                                    </ul>
+                                }
+                                @if (Model.Status.Contains("Bekleniyor"))
+                                {
+                                    <ul id="progressbar" class="text-center">
+                                        <li class="active step0"><span class="font-weight-bold" style="color:green;">Sipariş Verildi @Model.OrderDate.Value</span></li>
+                                        <li class="step1"><span class="font-weight-bold"></span></li>
+                                        <li class="step2"><span class="font-weight-bold"></span></li>
+                                        <li class="step3"><span class="font-weight-bold"></span></li>
+                                    </ul>
+                                }
+                                @if (Model.Status.Contains("Yolda"))
+                                {
+                                    <ul id="progressbar" class="text-center">
+                                        <li class="active step0"><span class="font-weight-bold">Sipariş Verildi @Model.OrderDate.Value</span></li>
+                                        <li class="active step1"><span class="font-weight-bold">Sipariş Onaylandı @Model.AcceptDate.Value</span></li>
+                                        <li class="active step2"><span class="font-weight-bold" style="color:green;">Sipariş Yolda @Model.AcceptDate.Value</span></li>
+                                        <li class="step3"><span class="font-weight-bold"></span></li>
+                                    </ul>
+                                }
+                                @if (Model.Status.Contains("Stok Yok"))
+                                {
+                                    <ul id="progressbar" class="text-center">
+                                        <li class="active step0"><span class="font-weight-bold">Sipariş Verildi @Model.OrderDate.Value</span></li>
+                                        <li class="active step1"><span class="font-weight-bold" style="color:red;">Sipariş Stokta Yok @Model.NoStockDate.Value</span></li>
+                                        <li class="step2"><span class="font-weight-bold"></span></li>
+                                        <li class="step3"><span class="font-weight-bold"></span></li>
+                                    </ul>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>

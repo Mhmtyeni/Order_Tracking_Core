@@ -1,0 +1,111 @@
+﻿@model List<SubLine>
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sipariş Takip</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/Login/css/main.css">
+    <!--===============================================================================================-->
+</head>
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login101">
+                <form>
+                    <center>
+                        <span class="login101-form-title" style="color:darkred">
+                            Görev Yeri Seçimi
+                        </span>
+                    </center>
+                    <br />
+                    @foreach (var line in Model)
+                    {
+                        <div class="form-check form-check-inline">
+                            <label style="font-size:20px;">
+                                <input type="checkbox" style="width:25px;height:25px;" id="@line.Id" name="settings" value="@line.Id" required>
+                                @(line.AssemblyLine.Name + " " + line.Name)
+                            </label>
+                        </div>
+                    }
+                    <center>
+                        <div class="container-login100-form-btn">
+                            <button type="submit" onclick="postData()" id="send" class="login100-form-btn">
+                                Onayla
+                            </button>
+                        </div>
+                    </center>
+                    <center>
+                        <div class="container-login100-form-btn">
+                            <button type="submit" onclick="window.location='/Login/Logout';" id="send" class="login100-form-btn" style="background:red">
+                                Çıkış
+                            </button>
+                        </div>
+                    </center>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--===============================================================================================-->
+    <script src="~/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/jquery/tilt.jquery.min.js"></script>
+    <script>
+        $('.js-tilt').tilt({
+            scale: 1.1
+        })
+    </script>
+    <!--===============================================================================================-->
+</body>
+</html>
+<script>
+    let checkboxes = $("input[type=checkbox][name=settings]")
+    let enabledSettings = [];
+
+    // Attach a change event handler to the checkboxes.
+    checkboxes.change(function () {
+        enabledSettings = checkboxes
+            .filter(":checked") // Filter out unchecked boxes.
+            .map(function () { // Extract values using jQuery map.
+                return this.value;
+            })
+            .get() // Get array.
+    });
+    function postData() {
+        if (enabledSettings.length>0) {
+            document.getElementById("send").disabled = true;
+            var postLink;
+            var temp = '@(ViewBag.isWareHouse)';
+
+            if (temp == "true") {
+                postLink = "/Warehouse/Index/";
+            } else {
+                postLink = "/Order/Index/";
+            }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LineArea", "Choose")',
+                data: {
+                    'SubLineId': enabledSettings,
+                },
+                success: function (data) {
+                    check = true,
+                        location.href = postLink + enabledSettings[0]
+                },
+                error: function (data) {
+                    document.getElementById("send").disabled = false;
+                }
+            });
+        }
+    }
+</script>

@@ -1,0 +1,100 @@
+﻿@model AppUserLoginDto
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sipariş Takip</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <link href="~/FontAwesome/css/font-awesome.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login/css/util.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login/css/main.css">
+    <!--===============================================================================================-->
+</head>
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="~/Login/images/2728472.png" alt="IMG">
+                </div>
+
+                <form class="login100-form validate-form" method="post" action="/Login/Index">
+                    <span class="login100-form-title" style="color:darkred">
+                        DENEME FABRİKA
+                    </span>
+                    <span class="login100-form-title">
+                        Sipariş Takip
+                    </span>
+                    @if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Count > 0)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <style>
+                                .help-block ul {
+                                    list-style-type: none;
+                                }
+                            </style>
+                            <center>
+                                <span class="help-block">
+                                    @Html.ValidationSummary()
+                                </span>
+                            </center>
+                           
+                        </div>
+                    }
+                    <div class="wrap-input100 validate-input" data-validate="Sicilinizi Giriniz.">
+                        <input class="input100" type="text" name="UserName" placeholder="Sicil" required>
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Şifre giriniz.">
+                        <input class="input100" type="password" name="Password" placeholder="Şifre" required autocomplete="on">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="container-login100-form-btn">
+                        <button type="submit" class="login100-form-btn">
+                            GİRİŞ
+                        </button>
+                    </div>
+
+                    <div class="text-center p-t-12">
+
+                    </div>
+
+                    <div class="text-center p-t-136">
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!--===============================================================================================-->
+    <script src="~/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <!--===============================================================================================-->
+    <script src="~/jquery/tilt.jquery.min.js"></script>
+    <!--===============================================================================================-->
+    <script>
+        $('.js-tilt').tilt({
+            scale: 1.1
+        })
+    </script>
+</body>
+</html>

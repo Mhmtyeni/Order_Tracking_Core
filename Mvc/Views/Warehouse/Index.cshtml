@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<title>Sipariş Takip</title>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/FontAwesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/bootstrap/main.css" rel="stylesheet" />
+    <link href="~/bootstrap/util.css" rel="stylesheet" />
+    <link href="~/Order/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="limiter">
+        <div class="container-table100">
+            <div class="wrap-table100">
+                <br />
+                @await Component.InvokeAsync("NavBar")
+                <br />
+                <br />
+                <div class="table100" id=dataTable>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<div id="orderDetailsModalPage">
+</div>
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/warehouse.js"></script>

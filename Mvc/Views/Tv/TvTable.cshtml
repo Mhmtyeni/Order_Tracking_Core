@@ -1,0 +1,83 @@
+﻿@model List<Order>
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<table>
+    <thead>
+        <tr class="table100-head">
+            <th class="column1">  <center>HAT </center></th>
+            <th class="column2">  <center>İSTASYON </center></th>
+            <th class="column3">  <center>MLZ KODU </center></th>
+            <th class="column4">  <center>AÇIKLAMA </center></th>
+            <th class="column5">  <center>ADET </center></th>
+            <th class="column6">  <center>DURUM </center></th>
+            <th class="column7">  <center>SAAT </center></th>
+            <th class="column8">  <center>İŞLEM </center></th>
+            @if (!User.IsInRole("TV"))
+            {
+                <th class="column9">  <center>ARAÇLAR </center></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var models in Model)
+        {
+            <tr>
+                <td class="column1">  <center>@(models.Station.SubLine.AssemblyLine.Name + " " +models.Station.SubLine.Name) </center></td>
+                <td class="column2">  <center>@models.Station.StationNumber  </center></td>
+                <td class="column3">  <center>@models.MaterialCode  </center></td>
+                <td class="column4">  <center>@models.MaterialDesc  </center></td>
+                <td class="column5">  <center>@models.Quantity  </center></td>
+                <td class="column6">  <center><a style="color:blue" onclick="orderDetails(@models.Id)">@models.Status</a>  </center></td>
+                <td class="column7">  <center>@models.OrderDate.Value  </center></td>
+                <td class="column8">  <center>@models.Operation.FirstName @models.Operation.LastName </center></td>
+                @if (!User.IsInRole("TV"))
+                {
+                    <td class="column9">
+                        <center>
+                            <div class="row">
+                                @if (models.Status.Contains("Bekleniyor"))
+                                {
+                                    <div class="col-md-12">
+                                        <a class="btn btn-warning btn-sm" style="color:white" onclick="getIdFunc(@models.Id)" title="Sipariş İptal">
+                                            <i class="fas fa-close fa-2x">
+                                            </i>
+                                        </a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    if (models.Status.Contains("Yolda"))
+                                    {
+                                        <div class="col-md-12">
+                                            <a class="btn btn-success btn-sm" style="color:white" onclick="getIdFunc2(@models.Id)" title="Sipariş Geldi">
+                                                <i class="fas fa-check fa-2x">
+                                                </i>
+                                            </a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-6">
+                                            <a class="btn btn-warning btn-sm" style="color:white" id="berat" onclick="getIdFunc(@models.Id)" title="Sipariş İptal">
+                                                <i class="fas fa-close fa-2x">
+                                                </i>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a class="btn btn-success btn-sm" style="color:white" onclick="getIdFunc2(@models.Id)" title="Sipariş Geldi">
+                                                <i class="fas fa-check fa-2x">
+                                                </i>
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </center>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,129 @@
+﻿@model OrderGeneralDto
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    setTimeout(function () {
+        location = ''
+    }, 600000)
+</script>
+<title>Sipariş Takip</title>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/FontAwesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/bootstrap/main.css" rel="stylesheet" />
+    <link href="~/bootstrap/util.css" rel="stylesheet" />
+    <link href="~/Order/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="limiter">
+        <div class="container-table100">
+            <div class="wrap-table100">
+                <br />
+                @await Component.InvokeAsync("NavBar")
+                <br />
+                <br />
+                <div class="container">
+                    <br />
+                    <div class="content">
+                        <form id="myForm">
+                            <div class="user-details2">
+                                <div class="input-box2">
+                                    <span class="details2">Hat:</span>
+                                    <select class="dropdownlist" data-val="true" data-val-number="The field Id must be a number." data-val-required="Id alanı gereklidir." id="Hat" name="SubLine.Id" required="">
+
+                                        <option selected disabled hidden>Hat Seçiniz</option>
+                                        @foreach (var item in ViewBag.dropDownData)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                    <br />
+                                    <br />
+                                    <span class="details2">İstasyon No:</span>
+                                    <select class="dropdownlist" data-val="true" data-val-number="The field Id must be a number." data-val-required="Id alanı gereklidir." id="stationNo" name="StationId" required="">
+                                        <option selected disabled hidden>İstasyon Seçiniz</option>
+                                    </select>
+                                    <br />
+                                    <br />
+                                    <span class="details2">Talep Yeri:</span>
+                                    <select class="dropdownlist" data-val="true" data-val-number="The field Id must be a number." data-val-required="Id alanı gereklidir." id="locationNo" name="LocationId" required="">
+                                        @foreach (var item in ViewBag.LocationList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                    <br />
+                                    <br />
+                                    <span class="details2">Malzeme Kodu</span>
+                                    <input type="number" id="materialCode" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" placeholder="Lütfen malzeme kodunu giriniz." required>
+                                    <br />
+                                    <br />
+                                    <span class="details2">Malzeme Adı</span>
+                                    <input type="text" id="materialDesc" placeholder="Açıklama giriniz." required>
+                                    <br />
+                                    <br />
+                                    <span class="details2">Adet</span>
+                                    <input type="number" id="quantity" placeholder="Lütfen adet giriniz." min="1" required>
+                                </div>
+                            </div>
+                            <div class="button">
+                                <input type="submit" id="send" onclick="validationOk()" value="Gönder">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var stationNo = document.getElementById("stationNo");
+    var materialCode = document.getElementById("materialCode");
+    var materialDesc = document.getElementById("materialDesc");
+    var quantity = document.getElementById("quantity");
+    var locationNo = document.getElementById("locationNo");
+
+    $("#Hat").change(function () {
+        getStationList();
+    });
+    function validationOk() {
+
+        if (stationNo.checkValidity() && materialCode.checkValidity() && materialDesc.checkValidity() && quantity.checkValidity()) {
+            document.getElementById("send").disabled = true;
+            $.ajax({
+                 url: '@Url.Action("AddOrder", "Order")',
+                 type: 'POST',
+                 dataType :'json',
+                 data: {
+                    'StationId': stationNo.value,
+                    'Orders.MaterialCode': materialCode.value,
+                    'Orders.MaterialDesc': materialDesc.value,
+                     'Orders.Quantity': quantity.value,
+                     'locationId': locationNo.value,
+                },
+                 success: function (data) {
+                    location.href = "/List/Index";
+                },
+                error: function (data) {
+                    document.getElementById("send").disabled = false;
+                }
+             });
+        }
+    }
+    function getStationList() {
+        $.ajax({
+            type: "GET",
+            url: "/Order/GetStationList?id=" + $("#Hat").val(),
+            success: function (data) {
+                $('#stationNo').empty();
+                for (var i = 0; i < data.$values.length; i++) {
+                    var select = document.getElementById("stationNo");
+                    select.appendChild(new Option(data.$values[i].stationNumber, data.$values[i].id));
+                }
+            }
+        });
+    }
+</script>
+
